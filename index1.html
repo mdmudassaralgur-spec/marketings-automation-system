@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARKET AUTO - Marketing Automation System (CRM)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fef2f2',
+                            100: '#ffe1e1',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for Data Visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; }
+    </style>
+</head>
+<body class="h-full text-slate-800 dark:text-slate-100 dark:bg-slate-900 transition-colors duration-200">
+
+    <div id="app" class="flex h-screen overflow-hidden">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col justify-between transition-all duration-300 z-30 shrink-0">
+            <div>
+                <!-- Brand Header -->
+                <div class="h-16 flex items-center px-6 border-b border-slate-200 dark:border-slate-700 bg-brand-600 text-white">
+                    <i class="fa-solid font-bold text-2xl fa-bullhorn mr-3"></i>
+                    <div class="flex flex-col">
+                        <span class="font-extrabold text-lg tracking-wider">MARKET <span class="font-light text-slate-100">AUTO</span></span>
+                        <span class="text-[10px] text-red-100 uppercase tracking-widest font-semibold">CRM System</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <nav class="mt-4 px-3 space-y-1">
+                    <a href="#" onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg text-white bg-brand-600 transition-colors">
+                        <i class="fa-solid fa-chart-line w-6 text-center text-lg mr-3"></i> Dashboard
+                    </a>
+                    <a href="#" onclick="switchTab('campaigns')" id="nav-campaigns" class="nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <i class="fa-solid fa-paper-plane w-6 text-center text-lg mr-3"></i> Campaigns
+                    </a>
+                    <a href="#" onclick="switchTab('templates')" id="nav-templates" class="nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <i class="fa-solid fa-envelope-open-text w-6 text-center text-lg mr-3"></i> Email Templates
+                    </a>
+                    <a href="#" onclick="switchTab('subscribers')" id="nav-subscribers" class="nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <i class="fa-solid fa-users w-6 text-center text-lg mr-3"></i> Subscribers
+                    </a>
+                    <a href="#" onclick="switchTab('analytics')" id="nav-analytics" class="nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <i class="fa-solid fa-chart-pie w-6 text-center text-lg mr-3"></i> Analytics
+                    </a>
+                    <a href="#" onclick="switchTab('workflows')" id="nav-workflows" class="nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <i class="fa-solid fa-diagram-project w-6 text-center text-lg mr-3"></i> Workflows
+                    </a>
+                    <a href="#" onclick="switchTab('landing')" id="nav-landing" class="nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <i class="fa-solid fa-laptop-code w-6 text-center text-lg mr-3"></i> Landing Pages
+                    </a>
+                    <a href="#" onclick="switchTab('reports')" id="nav-reports" class="nav-item flex items-center px-4 py-3 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <i class="fa-solid fa-file-invoice-dollar w-6 text-center text-lg mr-3"></i> Reports
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Footer / System Badge -->
+            <div class="p-4 border-t border-slate-200 dark:border-slate-700">
+                <div class="bg-red-50 dark:bg-slate-700/50 p-3 rounded-lg flex items-center space-x-3">
+                    <div class="p-2 bg-brand-100 dark:bg-brand-900/50 rounded text-brand-600 dark:text-brand-400">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div class="text-xs overflow-hidden">
+                        <p class="font-bold truncate text-slate-700 dark:text-slate-200">WD-CRM-005</p>
+                        <p class="text-slate-500 dark:text-slate-400 truncate">Data Alcott Systems</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+            <!-- Top Header Navbar -->
+            <header class="h-16 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-6 shrink-0">
+                <div class="flex items-center space-x-4">
+                    <button id="toggle-sidebar" onclick="toggleSidebar()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                    <!-- Global Search -->
+                    <div class="relative w-64 md:w-80">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                        <input type="text" id="global-search" onkeyup="handleGlobalSearch(event)" placeholder="Search campaigns, subscribers..." class="w-full pl-9 pr-4 py-1.5 text-sm bg-slate-100 dark:bg-slate-700 border-none rounded-lg focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100 placeholder-slate-400">
+                    </div>
+                </div>
+
+                <!-- Right Action Buttons & Profile -->
+                <div class="flex items-center space-x-4">
+                    <!-- Dark Mode Toggle -->
+                    <button onclick="toggleDarkMode()" class="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-lg bg-slate-100 dark:bg-slate-700">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:block text-amber-400"></i>
+                    </button>
+
+                    <!-- Notifications -->
+                    <div class="relative">
+                        <button onclick="toggleNotifications()" class="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-lg bg-slate-100 dark:bg-slate-700 relative">
+                            <i class="fa-solid fa-bell"></i>
+                            <span class="absolute top-1 right-1 w-2 h-2 bg-brand-600 rounded-full"></span>
+                        </button>
+                        <!-- Popover -->
+                        <div id="notifications-popover" class="hidden absolute right-0 mt-2 w-80 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-50 p-4">
+                            <h4 class="font-semibold text-sm border-b pb-2 dark:border-slate-700 flex justify-between">
+                                <span>Notifications</span>
+                                <span class="text-xs text-brand-600 cursor-pointer" onclick="clearNotifications()">Clear All</span>
+                            </h4>
+                            <div class="space-y-3 mt-3 text-xs" id="notification-list">
+                                <div class="flex items-start space-x-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-500 mt-0.5"></i>
+                                    <div>
+                                        <p class="font-medium">Campaign "Summer Sale 2026" launched!</p>
+                                        <p class="text-slate-400 text-[10px]">10 mins ago</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Profile Dropdown -->
+                    <div class="relative flex items-center space-x-3 border-l border-slate-200 dark:border-slate-700 pl-4">
+                        <div class="w-9 h-9 rounded-full bg-brand-600 text-white flex items-center justify-center font-bold text-sm shadow">
+                            DA
+                        </div>
+                        <div class="hidden md:block text-left">
+                            <p class="text-sm font-semibold leading-tight" id="user-display-name">Data Alcott Admin</p>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">admin@dataalcott.com</p>
+                        </div>
+                        <button onclick="switchTab('settings')" class="text-slate-400 hover:text-slate-600">
+                            <i class="fa-solid fa-gear"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Container (Dynamic Views) -->
+            <main class="flex-1 overflow-y-auto p-6 bg-slate-50 dark:bg-slate-900 custom-scrollbar" id="main-content">
+                
+                <!-- SECTION 1: DASHBOARD -->
+                <section id="view-dashboard" class="space-y-6">
+                    <!-- Welcome Banner -->
+                    <div class="bg-gradient-to-r from-brand-600 to-red-800 rounded-2xl p-6 text-white shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div>
+                            <h1 class="text-2xl font-bold">Marketing Automation System (CRM)</h1>
+                            <p class="text-red-100 text-sm mt-1">Free Web Development Internship Online Task · Campaign & Email Automation</p>
+                        </div>
+                        <button onclick="openNewCampaignModal()" class="px-4 py-2.5 bg-white text-brand-600 font-semibold text-sm rounded-lg hover:bg-red-50 transition shadow">
+                            <i class="fa-solid fa-plus mr-2"></i> Create Campaign
+                        </button>
+                    </div>
+
+                    <!-- Metric Cards Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-semibold text-slate-500 uppercase">Total Campaigns</span>
+                                <span class="p-2 bg-red-100 dark:bg-red-900/30 text-brand-600 rounded-lg"><i class="fa-solid fa-bullhorn"></i></span>
+                            </div>
+                            <h3 class="text-2xl font-bold mt-2" id="stat-total-campaigns">0</h3>
+                            <p class="text-xs text-emerald-600 mt-1 flex items-center"><i class="fa-solid fa-arrow-up mr-1"></i> +12% from last month</p>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-semibold text-slate-500 uppercase">Active Subscribers</span>
+                                <span class="p-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-lg"><i class="fa-solid fa-users"></i></span>
+                            </div>
+                            <h3 class="text-2xl font-bold mt-2" id="stat-total-subscribers">0</h3>
+                            <p class="text-xs text-emerald-600 mt-1 flex items-center"><i class="fa-solid fa-arrow-up mr-1"></i> +8.5% growth</p>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-semibold text-slate-500 uppercase">Avg Open Rate</span>
+                                <span class="p-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 rounded-lg"><i class="fa-solid fa-envelope-open"></i></span>
+                            </div>
+                            <h3 class="text-2xl font-bold mt-2" id="stat-avg-open-rate">0%</h3>
+                            <p class="text-xs text-emerald-600 mt-1 flex items-center"><i class="fa-solid fa-arrow-up mr-1"></i> +3.2% industry avg</p>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-semibold text-slate-500 uppercase">Avg Click Rate</span>
+                                <span class="p-2 bg-amber-100 dark:bg-amber-900/30 text-amber-600 rounded-lg"><i class="fa-solid fa-mouse-pointer"></i></span>
+                            </div>
+                            <h3 class="text-2xl font-bold mt-2" id="stat-avg-click-rate">0%</h3>
+                            <p class="text-xs text-emerald-600 mt-1 flex items-center"><i class="fa-solid fa-arrow-up mr-1"></i> +1.1% performance</p>
+                        </div>
+                    </div>
+
+                    <!-- Visual Charts Section -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Chart 1: Subscriber Growth -->
+                        <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-bold text-slate-800 dark:text-slate-100">Subscriber Growth Trends</h3>
+                                <span class="text-xs text-slate-400">Year 2026</span>
+                            </div>
+                            <div class="h-64 relative">
+                                <canvas id="chartSubscriberGrowth"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 2: Status Breakdown -->
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-bold text-slate-800 dark:text-slate-100">Campaign Statuses</h3>
+                                <span class="text-xs text-slate-400">Live Breakdown</span>
+                            </div>
+                            <div class="h-64 relative flex items-center justify-center">
+                                <canvas id="chartCampaignStatus"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Campaigns Quick View -->
+                    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+                        <div class="p-5 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                            <h3 class="font-bold text-slate-800 dark:text-slate-100">Recent Campaigns</h3>
+                            <button onclick="switchTab('campaigns')" class="text-xs font-semibold text-brand-600 hover:underline">View All Campaigns &rarr;</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-slate-50 dark:bg-slate-700/50 text-xs uppercase text-slate-400">
+                                    <tr>
+                                        <th class="px-6 py-3">Campaign Name</th>
+                                        <th class="px-6 py-3">Status</th>
+                                        <th class="px-6 py-3">Audience</th>
+                                        <th class="px-6 py-3">Open Rate</th>
+                                        <th class="px-6 py-3">Click Rate</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashboard-recent-campaigns" class="divide-y divide-slate-200 dark:divide-slate-700">
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 2: CAMPAIGN MANAGEMENT -->
+                <section id="view-campaigns" class="space-y-6 hidden">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold">Campaign Management</h2>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Create, edit, launch and track your marketing campaigns</p>
+                        </div>
+                        <button onclick="openNewCampaignModal()" class="px-4 py-2 bg-brand-600 text-white rounded-lg font-medium text-sm hover:bg-brand-700 transition flex items-center">
+                            <i class="fa-solid fa-plus mr-2"></i> Create New Campaign
+                        </button>
+                    </div>
+
+                    <!-- Status Filter Tabs -->
+                    <div class="flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
+                        <button onclick="filterCampaigns('all')" class="campaign-tab-btn active px-3 py-1.5 text-xs font-semibold rounded-lg bg-brand-600 text-white">All Campaigns</button>
+                        <button onclick="filterCampaigns('in-progress')" class="campaign-tab-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200">In Progress</button>
+                        <button onclick="filterCampaigns('scheduled')" class="campaign-tab-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200">Scheduled</button>
+                        <button onclick="filterCampaigns('completed')" class="campaign-tab-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200">Completed</button>
+                        <button onclick="filterCampaigns('draft')" class="campaign-tab-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200">Draft</button>
+                        <button onclick="filterCampaigns('cancelled')" class="campaign-tab-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200">Cancelled</button>
+                    </div>
+
+                    <!-- Search Filter Bar -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row gap-4 justify-between items-center">
+                        <div class="relative w-full sm:w-72">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="campaign-search" oninput="renderCampaigns()" placeholder="Search campaign name..." class="w-full pl-9 pr-3 py-1.5 text-sm bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg">
+                        </div>
+                        <span class="text-xs text-slate-500" id="campaign-count-label">Showing 0 campaigns</span>
+                    </div>
+
+                    <!-- Campaign Cards / Grid View -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="campaigns-grid-container">
+                        <!-- Dynamic Campaign Cards -->
+                    </div>
+                </section>
+
+                <!-- SECTION 3: EMAIL TEMPLATES -->
+                <section id="view-templates" class="space-y-6 hidden">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-2xl font-bold">Email Templates</h2>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Design and store responsive HTML email templates</p>
+                        </div>
+                        <button onclick="openNewTemplateModal()" class="px-4 py-2 bg-brand-600 text-white rounded-lg font-medium text-sm hover:bg-brand-700 transition">
+                            <i class="fa-solid fa-plus mr-2"></i> New Template
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="templates-grid">
+                        <!-- Dynamic Templates -->
+                    </div>
+                </section>
+
+                <!-- SECTION 4: SUBSCRIBER LIST -->
+                <section id="view-subscribers" class="space-y-6 hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold">Subscriber List</h2>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Audience segmentation and contact management</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="exportSubscribersCSV()" class="px-3 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-medium rounded-lg hover:bg-slate-300 transition">
+                                <i class="fa-solid fa-download mr-1"></i> Export CSV
+                            </button>
+                            <button onclick="openNewSubscriberModal()" class="px-4 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700 transition">
+                                <i class="fa-solid fa-user-plus mr-1"></i> Add Contact
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
+                        <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row justify-between gap-4">
+                            <input type="text" id="subscriber-search" oninput="renderSubscribers()" placeholder="Search name or email..." class="px-3 py-1.5 text-sm bg-slate-50 dark:bg-slate-700 border rounded-lg w-full sm:w-64">
+                            <select id="subscriber-filter-status" onchange="renderSubscribers()" class="px-3 py-1.5 text-sm bg-slate-50 dark:bg-slate-700 border rounded-lg">
+                                <option value="all">All Statuses</option>
+                                <option value="active">Active</option>
+                                <option value="unsubscribed">Unsubscribed</option>
+                            </select>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-slate-50 dark:bg-slate-700/50 text-xs uppercase text-slate-400">
+                                    <tr>
+                                        <th class="px-6 py-3">Subscriber</th>
+                                        <th class="px-6 py-3">Status</th>
+                                        <th class="px-6 py-3">Subscribed Date</th>
+                                        <th class="px-6 py-3 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="subscribers-table-body" class="divide-y divide-slate-200 dark:divide-slate-700">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 5: CAMPAIGN ANALYTICS -->
+                <section id="view-analytics" class="space-y-6 hidden">
+                    <div>
+                        <h2 class="text-2xl font-bold">Campaign Analytics & Deep Dive</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Real-time open rates, click rates, and conversion performance</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-4">Open Rate vs Click Rate Comparison</h3>
+                            <div class="h-64 relative">
+                                <canvas id="chartAnalyticsComparison"></canvas>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-4">Funnel Conversions</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-xs font-semibold mb-1">
+                                        <span>Emails Delivered (10,000)</span>
+                                        <span>100%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                                        <div class="bg-blue-500 h-full w-full"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs font-semibold mb-1">
+                                        <span>Emails Opened (4,520)</span>
+                                        <span>45.2%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                                        <div class="bg-emerald-500 h-full w-[45.2%]"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs font-semibold mb-1">
+                                        <span>Links Clicked (1,280)</span>
+                                        <span>12.8%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                                        <div class="bg-amber-500 h-full w-[12.8%]"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs font-semibold mb-1">
+                                        <span>Conversions / Sales (320)</span>
+                                        <span>3.2%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
+                                        <div class="bg-brand-600 h-full w-[3.2%]"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 6: AUTOMATION WORKFLOWS -->
+                <section id="view-workflows" class="space-y-6 hidden">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-2xl font-bold">Automation Workflows</h2>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Automated drip sequences, welcome series, and trigger rules</p>
+                        </div>
+                        <button onclick="createNewWorkflowPrompt()" class="px-4 py-2 bg-brand-600 text-white rounded-lg text-sm font-medium hover:bg-brand-700 transition">
+                            <i class="fa-solid fa-plus mr-2"></i> Create Workflow
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="workflows-grid">
+                        <!-- Dynamic Workflows -->
+                    </div>
+                </section>
+
+                <!-- SECTION 7: LANDING PAGES -->
+                <section id="view-landing" class="space-y-6 hidden">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-2xl font-bold">Landing Pages</h2>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Marketing campaign landing page lead capture</p>
+                        </div>
+                        <button onclick="alert('Landing Page Builder initialized!')" class="px-4 py-2 bg-brand-600 text-white rounded-lg text-sm font-medium hover:bg-brand-700 transition">
+                            <i class="fa-solid fa-plus mr-2"></i> Build Landing Page
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between shadow-sm">
+                            <div>
+                                <span class="px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-700">Published</span>
+                                <h3 class="text-lg font-bold mt-3">Summer Promo 2026 Sign-up</h3>
+                                <p class="text-xs text-slate-500 mt-1">URL: https://marketauto.io/p/summer-2026</p>
+                                <div class="flex space-x-6 mt-4 text-xs">
+                                    <div><span class="font-bold text-base block">1,420</span> Visits</div>
+                                    <div><span class="font-bold text-base block">380</span> Leads</div>
+                                    <div><span class="font-bold text-base block text-emerald-600">26.7%</span> Conv. Rate</div>
+                                </div>
+                            </div>
+                            <div class="mt-6 border-t pt-3 border-slate-100 dark:border-slate-700 flex justify-end space-x-2">
+                                <button onclick="previewLandingPage('Summer Promo 2026')" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 text-xs font-semibold rounded hover:bg-slate-200">Preview Page</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 8: REPORTS -->
+                <section id="view-reports" class="space-y-6 hidden">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-2xl font-bold">ROI & Performance Reports</h2>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Export financial return and engagement metrics</p>
+                        </div>
+                        <button onclick="downloadReport()" class="px-4 py-2 bg-brand-600 text-white rounded-lg text-sm font-medium hover:bg-brand-700 transition">
+                            <i class="fa-solid fa-file-pdf mr-2"></i> Generate Executive PDF/CSV
+                        </button>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 space-y-4 shadow-sm">
+                        <h3 class="text-lg font-bold border-b pb-2 dark:border-slate-700">Campaign ROI Executive Summary</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                            <div class="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                                <span class="text-xs text-slate-500 uppercase block">Total Spend</span>
+                                <span class="text-xl font-bold text-slate-800 dark:text-slate-100">$2,450.00</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                                <span class="text-xs text-slate-500 uppercase block">Generated Revenue</span>
+                                <span class="text-xl font-bold text-emerald-600">$18,920.00</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                                <span class="text-xs text-slate-500 uppercase block">Total ROI</span>
+                                <span class="text-xl font-bold text-brand-600">672.2%</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 9: SETTINGS -->
+                <section id="view-settings" class="space-y-6 hidden">
+                    <div>
+                        <h2 class="text-2xl font-bold">System & User Settings</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Manage profile data and application defaults</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 max-w-xl space-y-4 shadow-sm">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">User Display Name</label>
+                            <input type="text" id="settings-name-input" value="Data Alcott Admin" class="w-full px-3 py-2 text-sm border rounded-lg dark:bg-slate-700 dark:border-slate-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Email Address</label>
+                            <input type="email" id="settings-email-input" value="admin@dataalcott.com" class="w-full px-3 py-2 text-sm border rounded-lg dark:bg-slate-700 dark:border-slate-600">
+                        </div>
+                        <div class="pt-4 flex justify-between items-center border-t dark:border-slate-700">
+                            <button onclick="resetDataToDefault()" class="px-3 py-2 bg-slate-200 text-slate-700 text-xs font-semibold rounded hover:bg-slate-300">Reset Demo Data</button>
+                            <button onclick="saveUserSettings()" class="px-4 py-2 bg-brand-600 text-white text-sm font-semibold rounded-lg hover:bg-brand-700">Save Changes</button>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL: CREATE / EDIT CAMPAIGN -->
+    <div id="modal-campaign" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl p-6 shadow-2xl border border-slate-200 dark:border-slate-700">
+            <div class="flex justify-between items-center border-b pb-3 dark:border-slate-700">
+                <h3 class="font-bold text-lg" id="modal-campaign-title">Create New Campaign</h3>
+                <button onclick="closeModal('modal-campaign')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form id="campaign-form" onsubmit="saveCampaign(event)" class="space-y-4 mt-4">
+                <input type="hidden" id="campaign-id">
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Campaign Name</label>
+                    <input type="text" id="campaign-name" required placeholder="e.g. Summer Sale 2026" class="w-full px-3 py-2 text-sm border rounded-lg dark:bg-slate-700 dark:border-slate-600">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Type</label>
+                        <select id="campaign-type" class="w-full px-3 py-2 text-sm border rounded-lg dark:bg-slate-700 dark:border-slate-600">
+                            <option value="Email Campaign">Email Campaign</option>
+                            <option value="SMS Campaign">SMS Campaign</option>
+                            <option value="Automated Sequence">Automated Sequence</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Status</label>
+                        <select id="campaign-status" class="w-full px-3 py-2 text-sm border rounded-lg dark:bg-slate-700 dark:border-slate-600">
+                            <option value="draft">Draft</option>
+                            <option value="scheduled">Scheduled</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Target Audience</label>
+                    <select id="campaign-audience" class="w-full px-3 py-2 text-sm border rounded-lg dark:bg-slate-700 dark:border-slate-600">
+                        <option value="All Subscribers">All Subscribers</option>
+                        <option value="Engaged Subscribers">Engaged Subscribers</option>
+                        <option value="New Signups">New Signups</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Open Rate (%)</label>
+                        <input type="number" step="0.1" id="campaign-open-rate" value="0" class="w-full px-3 py-2 text-sm border rounded-lg dark:bg-slate-700 dark:border-slate-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Click Rate (%)</label>
+                        <input type="number" step="0.1" id="campaign-click-rate" value="0" class="w-full px-3 py-2 text-sm border rounded-lg dark:bg-slate-700 dark:border-slate-600">
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-2 pt-4 border-t dark:border-slate-700">
+                    <button type="button" onclick="closeModal('modal-campaign')" class="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200">Cancel</button>
+                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-brand-600 rounded-lg hover:bg-brand-700">Save Campaign</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: SUBSCRIBER -->
+    <div id="modal-subscriber" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl border border-slate-200 dark:border-slate-700">
+            <div class="flex justify-between items-center border-b pb-3 dark:border-slate-700">
+                <h3 class="font-bold text-lg">Add New Contact</h3>
+                <button onclick="closeModal('modal-subscriber')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="saveSubscriber(event)" class="space-y-4 mt-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Full Name</label>
+                    <input type="text" id="sub-name" required placeholder="John Smith" class="w-full px-3 py-2 text-sm border rounded-lg dark:bg-slate-700 dark:border-slate-600">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Email Address</label>
+                    <input type="email" id="sub-email" required placeholder="john@email.com" class="w-full px-3 py-2 text-sm border rounded-lg dark:bg-slate-700 dark:border-slate-600">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-slate-500 mb-1">Status</label>
+                    <select id="sub-status" class="w-full px-3 py-2 text-sm border rounded-lg dark:bg-slate-700 dark:border-slate-600">
+                        <option value="active">Active</option>
+                        <option value="unsubscribed">Unsubscribed</option>
+                    </select>
+                </div>
+                <div class="flex justify-end space-x-2 pt-4 border-t dark:border-slate-700">
+                    <button type="button" onclick="closeModal('modal-subscriber')" class="px-4 py-2 text-sm text-slate-600 bg-slate-100 rounded-lg">Cancel</button>
+                    <button type="submit" class="px-4 py-2 text-sm text-white bg-brand-600 rounded-lg hover:bg-brand-700">Save Contact</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: EMAIL TEMPLATE PREVIEW -->
+    <div id="modal-template-preview" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-2xl rounded-2xl p-6 shadow-2xl border border-slate-200 dark:border-slate-700">
+            <div class="flex justify-between items-center border-b pb-3 dark:border-slate-700">
+                <h3 class="font-bold text-lg" id="preview-template-title">Template Preview</h3>
+                <button onclick="closeModal('modal-template-preview')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="mt-4 space-y-3">
+                <div class="bg-slate-100 dark:bg-slate-700 p-3 rounded-lg text-xs space-y-1">
+                    <p><span class="font-bold">Subject:</span> <span id="preview-template-subject"></span></p>
+                    <p><span class="font-bold">Preview Text:</span> <span id="preview-template-snippet"></span></p>
+                </div>
+                <div class="border rounded-lg p-4 bg-white text-slate-800 min-h-[200px]" id="preview-template-body">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC & STATE MANAGEMENT -->
+    <script>
+        // Default Mock Data Structures matching the prompt
+        const INITIAL_CAMPAIGNS = [
+            { id: 1, name: "Summer Sale 2026", type: "Email Campaign", status: "in-progress", audience: "All Subscribers", sent_date: "2026-06-20", open_rate: 45.2, click_rate: 12.8, created_at: "2026-06-15" },
+            { id: 2, name: "Product Launch: New Collection", type: "Email Campaign", status: "scheduled", audience: "Engaged Subscribers", sent_date: "2026-06-25", open_rate: 0, click_rate: 0, created_at: "2026-06-18" },
+            { id: 3, name: "Welcome Onboarding Sequence", type: "Automated Sequence", status: "completed", audience: "New Signups", sent_date: "2026-05-01", open_rate: 68.4, click_rate: 24.1, created_at: "2026-04-28" },
+            { id: 4, name: "Flash Friday Promo", type: "Email Campaign", status: "draft", audience: "All Subscribers", sent_date: "-", open_rate: 0, click_rate: 0, created_at: "2026-06-19" },
+            { id: 5, name: "Re-engagement Push", type: "Email Campaign", status: "cancelled", audience: "Inactive Users", sent_date: "-", open_rate: 0, click_rate: 0, created_at: "2026-06-10" }
+        ];
+
+        const INITIAL_SUBSCRIBERS = [
+            { id: 1, email: "john@email.com", name: "John Smith", status: "active", subscribed_date: "2026-01-15" },
+            { id: 2, email: "sarah@email.com", name: "Sarah Johnson", status: "active", subscribed_date: "2026-02-20" },
+            { id: 3, email: "michael@company.com", name: "Michael Brown", status: "active", subscribed_date: "2026-03-05" },
+            { id: 4, email: "emily@design.org", name: "Emily Davis", status: "unsubscribed", subscribed_date: "2026-03-12" },
+            { id: 5, email: "alex@tech.io", name: "Alex Wilson", status: "active", subscribed_date: "2026-04-01" }
+        ];
+
+        const INITIAL_TEMPLATES = [
+            { id: 1, name: "Modern Promotional Newsletter", subject: "Exclusive Summer Offers Inside!", snippet: "Save up to 50% on all our flagship products this week.", content: "<h2>Big Summer Discounts!</h2><p>Check out our catalog and enjoy special early-bird rates.</p>" },
+            { id: 2, name: "Welcome Email Series", subject: "Welcome to Market Auto CRM!", snippet: "Here is your quick setup guide to getting started.", content: "<h2>Welcome Aboard!</h2><p>We are excited to have you join our automation ecosystem.</p>" },
+            { id: 3, name: "Abandoned Cart Alert", subject: "You left something special behind...", snippet: "Complete your checkout now and get free shipping.", content: "<h2>Still thinking it over?</h2><p>Your selected items are saved in your cart.</p>" }
+        ];
+
+        const INITIAL_WORKFLOWS = [
+            { id: 1, name: "New User Onboarding", trigger: "User Signs Up", action: "Send Welcome Template -> Wait 2 Days -> Send Tutorial", status: "Active" },
+            { id: 2, name: "Abandoned Cart Recovery", trigger: "Cart Inactive 24h", action: "Send Reminder Email -> Offer 10% Coupon", status: "Active" }
+        ];
+
+        // State variables
+        let campaigns = JSON.parse(localStorage.getItem('market_campaigns')) || INITIAL_CAMPAIGNS;
+        let subscribers = JSON.parse(localStorage.getItem('market_subscribers')) || INITIAL_SUBSCRIBERS;
+        let templates = JSON.parse(localStorage.getItem('market_templates')) || INITIAL_TEMPLATES;
+        let workflows = JSON.parse(localStorage.getItem('market_workflows')) || INITIAL_WORKFLOWS;
+        let activeTab = 'dashboard';
+        let currentFilterStatus = 'all';
+
+        // Chart references
+        let chartGrowth = null;
+        let chartStatus = null;
+        let chartComparison = null;
+
+        // Initialize App on DOM load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderDashboard();
+            renderCampaigns();
+            renderSubscribers();
+            renderTemplates();
+            renderWorkflows();
+            initCharts();
+        });
+
+        // Save State helper
+        function saveState() {
+            localStorage.setItem('market_campaigns', JSON.stringify(campaigns));
+            localStorage.setItem('market_subscribers', JSON.stringify(subscribers));
+            localStorage.setItem('market_templates', JSON.stringify(templates));
+            localStorage.setItem('market_workflows', JSON.stringify(workflows));
+        }
+
+        // Tab Navigation Switcher
+        function switchTab(tabId) {
+            activeTab = tabId;
+            document.querySelectorAll('main > section').forEach(section => section.classList.add('hidden'));
+            const targetSection = document.getElementById(`view-${tabId}`);
+            if (targetSection) targetSection.classList.remove('hidden');
+
+            // Update Sidebar Styling
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('bg-brand-600', 'text-white');
+                item.classList.add('text-slate-600', 'dark:text-slate-300');
+            });
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.add('bg-brand-600', 'text-white');
+                activeNav.classList.remove('text-slate-600', 'dark:text-slate-300');
+            }
+
+            // Re-render relevant components if needed
+            if (tabId === 'dashboard') {
+                renderDashboard();
+            } else if (tabId === 'campaigns') {
+                renderCampaigns();
+            } else if (tabId === 'subscribers') {
+                renderSubscribers();
+            } else if (tabId === 'analytics') {
+                renderAnalyticsCharts();
+            }
+        }
+
+        // Render Dashboard KPIs and Summary Table
+        function renderDashboard() {
+            document.getElementById('stat-total-campaigns').innerText = campaigns.length;
+            document.getElementById('stat-total-subscribers').innerText = subscribers.filter(s => s.status === 'active').length;
+
+            const activeCampaigns = campaigns.filter(c => c.open_rate > 0);
+            const avgOpen = activeCampaigns.length ? (activeCampaigns.reduce((acc, c) => acc + c.open_rate, 0) / activeCampaigns.length).toFixed(1) : 0;
+            const avgClick = activeCampaigns.length ? (activeCampaigns.reduce((acc, c) => acc + c.click_rate, 0) / activeCampaigns.length).toFixed(1) : 0;
+
+            document.getElementById('stat-avg-open-rate').innerText = `${avgOpen}%`;
+            document.getElementById('stat-avg-click-rate').innerText = `${avgClick}%`;
+
+            // Dashboard Table Recent Campaigns
+            const recentTbody = document.getElementById('dashboard-recent-campaigns');
+            recentTbody.innerHTML = '';
+            campaigns.slice(0, 4).forEach(c => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 dark:hover:bg-slate-700/30 transition";
+                tr.innerHTML = `
+                    <td class="px-6 py-3 font-semibold">${c.name}</td>
+                    <td class="px-6 py-3">${getStatusBadge(c.status)}</td>
+                    <td class="px-6 py-3 text-slate-500">${c.audience}</td>
+                    <td class="px-6 py-3 font-medium text-emerald-600">${c.open_rate}%</td>
+                    <td class="px-6 py-3 font-medium text-amber-600">${c.click_rate}%</td>
+                `;
+                recentTbody.appendChild(tr);
+            });
+        }
+
+        // Render Campaign Cards & Management
+        function renderCampaigns() {
+            const container = document.getElementById('campaigns-grid-container');
+            const searchVal = document.getElementById('campaign-search').value.toLowerCase();
+            container.innerHTML = '';
+
+            let filtered = campaigns.filter(c => {
+                const matchesStatus = currentFilterStatus === 'all' || c.status === currentFilterStatus;
+                const matchesSearch = c.name.toLowerCase().includes(searchVal);
+                return matchesStatus && matchesSearch;
+            });
+
+            document.getElementById('campaign-count-label').innerText = `Showing ${filtered.length} campaigns`;
+
+            filtered.forEach(c => {
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs text-slate-400 uppercase font-semibold">${c.type}</span>
+                            ${getStatusBadge(c.status)}
+                        </div>
+                        <h3 class="font-bold text-lg mt-2 text-slate-800 dark:text-slate-100">${c.name}</h3>
+                        <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-users mr-1"></i> Audience: ${c.audience}</p>
+                        
+                        <div class="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-slate-100 dark:border-slate-700 text-center">
+                            <div class="bg-slate-50 dark:bg-slate-700/50 p-2 rounded-lg">
+                                <span class="text-[10px] text-slate-400 block uppercase">Open Rate</span>
+                                <span class="font-bold text-sm text-emerald-600">${c.open_rate}%</span>
+                            </div>
+                            <div class="bg-slate-50 dark:bg-slate-700/50 p-2 rounded-lg">
+                                <span class="text-[10px] text-slate-400 block uppercase">Click Rate</span>
+                                <span class="font-bold text-sm text-amber-600">${c.click_rate}%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center mt-5 pt-3 border-t border-slate-100 dark:border-slate-700 text-xs">
+                        <span class="text-slate-400">${c.sent_date !== '-' ? 'Sent: ' + c.sent_date : 'Draft'}</span>
+                        <div class="flex space-x-2">
+                            <button onclick="editCampaign(${c.id})" class="p-1.5 text-slate-500 hover:text-brand-600"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button onclick="deleteCampaign(${c.id})" class="p-1.5 text-slate-500 hover:text-red-600"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Render Subscribers Table
+        function renderSubscribers() {
+            const tbody = document.getElementById('subscribers-table-body');
+            const searchVal = document.getElementById('subscriber-search').value.toLowerCase();
+            const statusVal = document.getElementById('subscriber-filter-status').value;
+            tbody.innerHTML = '';
+
+            subscribers.filter(s => {
+                const matchesSearch = s.name.toLowerCase().includes(searchVal) || s.email.toLowerCase().includes(searchVal);
+                const matchesStatus = statusVal === 'all' || s.status === statusVal;
+                return matchesSearch && matchesStatus;
+            }).forEach(s => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 dark:hover:bg-slate-700/30 transition";
+                tr.innerHTML = `
+                    <td class="px-6 py-3">
+                        <p class="font-semibold text-slate-800 dark:text-slate-200">${s.name}</p>
+                        <p class="text-xs text-slate-400">${s.email}</p>
+                    </td>
+                    <td class="px-6 py-3">
+                        <span class="px-2.5 py-1 text-xs rounded-full font-semibold ${s.status === 'active' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'}">
+                            ${s.status}
+                        </span>
+                    </td>
+                    <td class="px-6 py-3 text-xs text-slate-500">${s.subscribed_date}</td>
+                    <td class="px-6 py-3 text-right">
+                        <button onclick="deleteSubscriber(${s.id})" class="text-slate-400 hover:text-red-600 text-xs"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Render Email Templates
+        function renderTemplates() {
+            const grid = document.getElementById('templates-grid');
+            grid.innerHTML = '';
+
+            templates.forEach(t => {
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between shadow-sm";
+                card.innerHTML = `
+                    <div>
+                        <span class="text-xs text-brand-600 font-bold uppercase"><i class="fa-solid fa-file-code mr-1"></i> Template</span>
+                        <h3 class="font-bold text-lg mt-1">${t.name}</h3>
+                        <p class="text-xs font-semibold text-slate-600 dark:text-slate-300 mt-2">Subject: "${t.subject}"</p>
+                        <p class="text-xs text-slate-400 mt-1 line-clamp-2">${t.snippet}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700 flex justify-end space-x-2">
+                        <button onclick="previewTemplate(${t.id})" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 text-xs font-semibold rounded hover:bg-slate-200">Preview</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Render Automation Workflows
+        function renderWorkflows() {
+            const grid = document.getElementById('workflows-grid');
+            grid.innerHTML = '';
+
+            workflows.forEach(w => {
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-base">${w.name}</h3>
+                        <span class="px-2.5 py-0.5 text-xs bg-emerald-100 text-emerald-700 rounded-full font-bold">${w.status}</span>
+                    </div>
+                    <div class="space-y-2 text-xs">
+                        <div class="p-2.5 bg-slate-50 dark:bg-slate-700/50 rounded-lg flex items-center">
+                            <i class="fa-solid fa-bolt text-amber-500 mr-2 text-sm"></i>
+                            <div><span class="font-semibold block">Trigger:</span> ${w.trigger}</div>
+                        </div>
+                        <div class="p-2.5 bg-slate-50 dark:bg-slate-700/50 rounded-lg flex items-center">
+                            <i class="fa-solid fa-arrow-right-long text-brand-600 mr-2 text-sm"></i>
+                            <div><span class="font-semibold block">Action Sequence:</span> ${w.action}</div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Helper: Status Badge Generator
+        function getStatusBadge(status) {
+            const badges = {
+                'draft': '<span class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-slate-200 text-slate-700">Draft</span>',
+                'scheduled': '<span class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-blue-100 text-blue-700">Scheduled</span>',
+                'in-progress': '<span class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-amber-100 text-amber-700">In Progress</span>',
+                'completed': '<span class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-100 text-emerald-700">Completed</span>',
+                'cancelled': '<span class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-red-100 text-red-700">Cancelled</span>'
+            };
+            return badges[status] || badges['draft'];
+        }
+
+        // Filter Tab Action
+        function filterCampaigns(status) {
+            currentFilterStatus = status;
+            document.querySelectorAll('.campaign-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white');
+                btn.classList.add('bg-slate-200', 'dark:bg-slate-700', 'text-slate-700', 'dark:text-slate-200');
+            });
+            event.target.classList.add('bg-brand-600', 'text-white');
+            event.target.classList.remove('bg-slate-200', 'dark:bg-slate-700', 'text-slate-700', 'dark:text-slate-200');
+            renderCampaigns();
+        }
+
+        // Modal Controls
+        function openNewCampaignModal() {
+            document.getElementById('campaign-form').reset();
+            document.getElementById('campaign-id').value = '';
+            document.getElementById('modal-campaign-title').innerText = 'Create New Campaign';
+            document.getElementById('modal-campaign').classList.remove('hidden');
+        }
+
+        function editCampaign(id) {
+            const campaign = campaigns.find(c => c.id === id);
+            if (!campaign) return;
+
+            document.getElementById('campaign-id').value = campaign.id;
+            document.getElementById('campaign-name').value = campaign.name;
+            document.getElementById('campaign-type').value = campaign.type;
+            document.getElementById('campaign-status').value = campaign.status;
+            document.getElementById('campaign-audience').value = campaign.audience;
+            document.getElementById('campaign-open-rate').value = campaign.open_rate;
+            document.getElementById('campaign-click-rate').value = campaign.click_rate;
+
+            document.getElementById('modal-campaign-title').innerText = 'Edit Campaign';
+            document.getElementById('modal-campaign').classList.remove('hidden');
+        }
+
+        function saveCampaign(e) {
+            e.preventDefault();
+            const id = document.getElementById('campaign-id').value;
+            const name = document.getElementById('campaign-name').value;
+            const type = document.getElementById('campaign-type').value;
+            const status = document.getElementById('campaign-status').value;
+            const audience = document.getElementById('campaign-audience').value;
+            const open_rate = parseFloat(document.getElementById('campaign-open-rate').value) || 0;
+            const click_rate = parseFloat(document.getElementById('campaign-click-rate').value) || 0;
+
+            if (id) {
+                // Update
+                const index = campaigns.findIndex(c => c.id == id);
+                if (index !== -1) {
+                    campaigns[index] = { ...campaigns[index], name, type, status, audience, open_rate, click_rate };
+                }
+            } else {
+                // Create
+                const newCampaign = {
+                    id: Date.now(),
+                    name, type, status, audience, open_rate, click_rate,
+                    sent_date: status === 'in-progress' || status === 'completed' ? new Date().toISOString().split('T')[0] : '-',
+                    created_at: new Date().toISOString().split('T')[0]
+                };
+                campaigns.unshift(newCampaign);
+            }
+
+            saveState();
+            closeModal('modal-campaign');
+            renderCampaigns();
+            renderDashboard();
+            updateCharts();
+        }
+
+        function deleteCampaign(id) {
+            campaigns = campaigns.filter(c => c.id !== id);
+            saveState();
+            renderCampaigns();
+            renderDashboard();
+            updateCharts();
+        }
+
+        function openNewSubscriberModal() {
+            document.getElementById('modal-subscriber').classList.remove('hidden');
+        }
+
+        function saveSubscriber(e) {
+            e.preventDefault();
+            const name = document.getElementById('sub-name').value;
+            const email = document.getElementById('sub-email').value;
+            const status = document.getElementById('sub-status').value;
+
+            const newSub = {
+                id: Date.now(),
+                name, email, status,
+                subscribed_date: new Date().toISOString().split('T')[0]
+            };
+
+            subscribers.unshift(newSub);
+            saveState();
+            closeModal('modal-subscriber');
+            renderSubscribers();
+            renderDashboard();
+        }
+
+        function deleteSubscriber(id) {
+            subscribers = subscribers.filter(s => s.id !== id);
+            saveState();
+            renderSubscribers();
+            renderDashboard();
+        }
+
+        function previewTemplate(id) {
+            const tmpl = templates.find(t => t.id === id);
+            if (!tmpl) return;
+
+            document.getElementById('preview-template-title').innerText = tmpl.name;
+            document.getElementById('preview-template-subject').innerText = tmpl.subject;
+            document.getElementById('preview-template-snippet').innerText = tmpl.snippet;
+            document.getElementById('preview-template-body').innerHTML = tmpl.content;
+
+            document.getElementById('modal-template-preview').classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        // Charts Logic
+        function initCharts() {
+            // Growth Line Chart
+            const ctxGrowth = document.getElementById('chartSubscriberGrowth').getContext('2d');
+            chartGrowth = new Chart(ctxGrowth, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Subscribers',
+                        data: [1200, 1900, 3000, 4800, 5600, 7200],
+                        borderColor: '#dc2626',
+                        backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            // Status Doughnut Chart
+            const ctxStatus = document.getElementById('chartCampaignStatus').getContext('2d');
+            chartStatus = new Chart(ctxStatus, {
+                type: 'doughnut',
+                data: getStatusChartData(),
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        function getStatusChartData() {
+            const counts = { 'in-progress': 0, 'scheduled': 0, 'completed': 0, 'draft': 0, 'cancelled': 0 };
+            campaigns.forEach(c => { if(counts[c.status] !== undefined) counts[c.status]++; });
+
+            return {
+                labels: ['In Progress', 'Scheduled', 'Completed', 'Draft', 'Cancelled'],
+                datasets: [{
+                    data: [counts['in-progress'], counts['scheduled'], counts['completed'], counts['draft'], counts['cancelled']],
+                    backgroundColor: ['#f59e0b', '#3b82f6', '#10b981', '#94a3b8', '#ef4444']
+                }]
+            };
+        }
+
+        function updateCharts() {
+            if (chartStatus) {
+                chartStatus.data = getStatusChartData();
+                chartStatus.update();
+            }
+        }
+
+        function renderAnalyticsCharts() {
+            if (!chartComparison) {
+                const ctxComp = document.getElementById('chartAnalyticsComparison').getContext('2d');
+                chartComparison = new Chart(ctxComp, {
+                    type: 'bar',
+                    data: {
+                        labels: campaigns.map(c => c.name.substring(0, 12) + '...'),
+                        datasets: [
+                            { label: 'Open Rate (%)', data: campaigns.map(c => c.open_rate), backgroundColor: '#10b981' },
+                            { label: 'Click Rate (%)', data: campaigns.map(c => c.click_rate), backgroundColor: '#f59e0b' }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+            } else {
+                chartComparison.data.labels = campaigns.map(c => c.name.substring(0, 12) + '...');
+                chartComparison.data.datasets[0].data = campaigns.map(c => c.open_rate);
+                chartComparison.data.datasets[1].data = campaigns.map(c => c.click_rate);
+                chartComparison.update();
+            }
+        }
+
+        // Global UI Toggles
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('-ml-64');
+        }
+
+        function toggleNotifications() {
+            document.getElementById('notifications-popover').classList.toggle('hidden');
+        }
+
+        function clearNotifications() {
+            document.getElementById('notification-list').innerHTML = '<p class="text-slate-400 text-center py-2">No new notifications</p>';
+        }
+
+        function exportSubscribersCSV() {
+            let csv = 'ID,Name,Email,Status,Subscribed Date\n';
+            subscribers.forEach(s => {
+                csv += `${s.id},"${s.name}","${s.email}",${s.status},${s.subscribed_date}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'subscribers_export.csv');
+            a.click();
+        }
+
+        function downloadReport() {
+            alert('Exporting Campaign ROI and Performance report in CSV format...');
+            let csv = 'Campaign,Status,Audience,Open Rate,Click Rate\n';
+            campaigns.forEach(c => {
+                csv += `"${c.name}",${c.status},"${c.audience}",${c.open_rate}%,${c.click_rate}%\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'marketing_roi_report.csv');
+            a.click();
+        }
+
+        function resetDataToDefault() {
+            localStorage.clear();
+            campaigns = INITIAL_CAMPAIGNS;
+            subscribers = INITIAL_SUBSCRIBERS;
+            templates = INITIAL_TEMPLATES;
+            workflows = INITIAL_WORKFLOWS;
+            saveState();
+            location.reload();
+        }
+
+        function saveUserSettings() {
+            const name = document.getElementById('settings-name-input').value;
+            document.getElementById('user-display-name').innerText = name;
+            alert('Settings updated successfully!');
+        }
+    </script>
+</body>
+</html>
